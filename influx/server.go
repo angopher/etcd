@@ -48,8 +48,12 @@ func (s *RaftServer) Run() {
 }
 
 func (s *RaftServer) saveToStorage(h raftpb.HardState, es []raftpb.Entry, sn raftpb.Snapshot) {
+	s.Storage.Append(es)
+	s.Storage.SetHardState(h)
+	s.Storage.ApplySnapshot(sn)
 }
 
+//TODO:get peer addr by peer id
 func (s *RaftServer) send(messages []raftpb.Message) {
 	for _, msg := range messages {
 		data, err := msg.Marshal()
