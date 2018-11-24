@@ -33,7 +33,7 @@ func (s *RaftServer) StartNode(peers []raft.Peer) {
 }
 
 func (s *RaftServer) Run() {
-	t := time.NewTicker(20 * time.Millisecond)
+	t := time.NewTicker(time.Second)
     for {
         select {
 		case <-t.C:
@@ -67,9 +67,11 @@ func (s *RaftServer) send(messages []raftpb.Message) {
 		if err != nil {
 			panic(err)
 		}
-		err = Request(fmt.Sprintf("%s/message", NodeAddr(msg.To)), data)
+
+		url := fmt.Sprintf("http://%s/message", NodeAddr(msg.To))
+		err = Request(url, data)
 		if err != nil {
-			panic(err)
+			fmt.Printf("Request url:%s fail:%v\n", url, err)
 		}
 	}
 }

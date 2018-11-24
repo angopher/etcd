@@ -28,7 +28,7 @@ func main() {
         MaxSizePerMsg:   4096,
         MaxInflightMsgs: 256,
     }
-    peers := []raft.Peer{{ID: uint64(*id2)}, {ID: uint64(*id3)}}
+	peers := []raft.Peer{{ID: uint64(*selfID)}, {ID: uint64(*id2)}, {ID: uint64(*id3)}}
 
     srv := &influx.RaftServer{
         RaftConfig: c,
